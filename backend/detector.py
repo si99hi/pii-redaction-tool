@@ -14,7 +14,21 @@ def initialize_detector():
     if analyzer is None:
         try:
             from presidio_analyzer import AnalyzerEngine
-            analyzer = AnalyzerEngine()
+            from presidio_analyzer.nlp_engine import NlpEngineProvider
+
+            # Configure Presidio to use en_core_web_sm instead of en_core_web_lg to fit within 512MB RAM
+            nlp_config = {
+                "nlp_engine_name": "spacy",
+                "models": [
+                    {
+                        "lang_code": "en",
+                        "model_name": "en_core_web_sm"
+                    }
+                ]
+            }
+            provider = NlpEngineProvider(nlp_configuration=nlp_config)
+            nlp_engine = provider.create_engine()
+            analyzer = AnalyzerEngine(nlp_engine=nlp_engine)
         except ImportError as e:
             raise RuntimeError(
                 "Presidio Analyzer is required."
