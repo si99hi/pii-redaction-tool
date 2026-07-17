@@ -2,23 +2,72 @@ import string
 from docx import Document
 
 def load_document(file_path_or_stream):
-    """
-    Loads a DOCX document from a file path or file-like binary stream.
-    """
+    """Load DOCX document."""
     return Document(file_path_or_stream)
 
 def save_document(doc, file_path_or_stream):
-    """
-    Saves the DOCX document to a file path or file-like binary stream.
-    """
+    """Save DOCX document."""
     doc.save(file_path_or_stream)
 
+def redact_string(text: str, mapping_dict: dict) -> str:
+    """Redact string mapping."""
+    if not text or not mapping_dict:
+        return text
+
+    matches = []
+    
+    for original, replacement in mapping_dict.items():
+        if not original:
+            continue
+        
+        start_idx = 0
+        while True:
+            idx = text.find(original, start_idx)
+            if idx == -1:
+                break
+            
+            span_start = idx
+            span_end = idx + len(original)
+            
+            is_word = True
+            if span_start > 0:
+                char_before = text[span_start - 1]
+                if char_before.isalnum():
+                    is_word = False
+            if span_end < len(text):
+                char_after = text[span_end]
+                if char_after.isalnum():
+                    is_word = False
+
+            if not is_word:
+                start_idx = idx + 1
+                continue
+
+            overlap = False
+            for m in matches:
+                if span_start < m["end"] and span_end > m["start"]:
+                    overlap = True
+                    break
+            
+            if not overlap:
+                matches.append({
+                    "start": span_start,
+                    "end": span_end,
+                    "replacement": replacement
+                })
+            
+            start_idx = idx + 1
+
+    matches.sort(key=lambda x: x["start"], reverse=True)
+
+    result = text
+    for m in matches:
+        result = result[:m["start"]] + m["replacement"] + result[m["end"]:]
+
+    return result
+
 def redact_paragraph(paragraph, mapping_dict):
-    """
-    Redacts text within a paragraph. 
-    First tries run-level replacement to preserve run formatting (bold, italic, etc.).
-    Falls back to paragraph-level replacement if the PII text is split across runs.
-    """
+    """Redact paragraph runs and text."""
     text = paragraph.text
     if not text:
         return
@@ -44,9 +93,7 @@ def redact_paragraph(paragraph, mapping_dict):
         run_stripped = run.text.strip()
         if not run_stripped or len(run_stripped) <= 2 or run_stripped.isdigit():
             continue
-        for original, replacement in mapping_dict.items():
-            if original in run.text:
-                run.text = run.text.replace(original, replacement)
+        run.text = redact_string(run.text, mapping_dict)
 
     full_text = paragraph.text
     needs_fallback = False
@@ -56,15 +103,10 @@ def redact_paragraph(paragraph, mapping_dict):
             break
 
     if needs_fallback:
-        new_text = full_text
-        for original, replacement in mapping_dict.items():
-            new_text = new_text.replace(original, replacement)
-        paragraph.text = new_text
+        paragraph.text = redact_string(full_text, mapping_dict)
 
 def redact_document(doc, mapping_dict):
-    """
-    Iterates through all paragraphs and table cells in the document to redact PII.
-    """
+    """Redact doc paragraphs and tables."""
     if not mapping_dict:
         return
 

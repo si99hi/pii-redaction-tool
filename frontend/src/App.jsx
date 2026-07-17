@@ -60,7 +60,12 @@ export default function App() {
       setRedactedFileName(`redacted_${file.name}`);
       setSuccess(true);
     } catch (err) {
-      setError(err.message || 'Failed to communicate with backend server.');
+      const msg = err.message || '';
+      if (msg.includes('Failed to fetch') || msg.includes('NetworkError') || msg.includes('network error') || msg === 'TypeError: Failed to fetch') {
+        setError('Could not connect to the backend server. If the server is starting up, please wait 1-5 minutes for the server to wake and try again.');
+      } else {
+        setError(msg || 'Failed to communicate with the backend server.');
+      }
     } finally {
       setLoading(false);
     }
@@ -212,12 +217,34 @@ export default function App() {
         /* Alerts and loaders with sharp edges */
         .loader {
           text-align: center;
-          padding: 20px;
+          padding: 24px 20px;
           background: #faf8f5;
           border: 1px solid #e5e0da;
-          color: #5e5650;
+          color: #1d1916;
           font-family: monospace;
           margin-bottom: 20px;
+        }
+
+        .progress-bar-container {
+          width: 100%;
+          height: 6px;
+          background-color: #e5e0da;
+          margin-top: 16px;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .progress-bar-fill {
+          height: 100%;
+          background-color: #1d1916;
+          width: 35%;
+          position: absolute;
+          animation: slide 1.6s infinite ease-in-out;
+        }
+
+        @keyframes slide {
+          0% { left: -35%; }
+          100% { left: 100%; }
         }
 
         .error-box {
@@ -312,7 +339,15 @@ export default function App() {
 
       {loading && (
         <div className="loader">
-          [PROCESSING] Redacting document and generating fake values...
+          <div style={{ fontWeight: 'bold' }}>
+            [PROCESSING] Redacting document and generating fake values...
+          </div>
+          <div style={{ marginTop: '8px', fontSize: '0.85rem', color: '#5e5650' }}>
+            Please wait 5-10 minutes for large documents.
+          </div>
+          <div className="progress-bar-container">
+            <div className="progress-bar-fill"></div>
+          </div>
         </div>
       )}
 
@@ -334,7 +369,7 @@ export default function App() {
               <thead>
                 <tr>
                   <th>PII Category</th>
-                  <th>Detections Count</th>
+                  <th>Detected Entities</th>
                 </tr>
               </thead>
               <tbody>

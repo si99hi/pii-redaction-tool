@@ -5,79 +5,10 @@ import json
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from backend import detector
-from backend.detector import (
-    PHONE_REGEX, COMPANY_REGEX, ADDRESS_REGEX,
-    SSN_REGEX, CC_REGEX, IP_REGEX, DATE_REGEX, add_detection_if_no_overlap
-)
 
 def get_predictions(text: str) -> list:
-    """
-    Runs the exact detector pipeline to extract predicted spans with types.
-    """
-    presidio_entities = [
-        "EMAIL_ADDRESS", "PERSON", "PHONE_NUMBER", 
-        "LOCATION", "US_SSN", "CREDIT_CARD", 
-        "DATE_TIME", "IP_ADDRESS"
-    ]
-    
-    results = detector.analyzer.analyze(
-        text=text, 
-        entities=presidio_entities, 
-        language="en"
-    )
-
-    detections = []
-    for r in results:
-        et = r.entity_type
-        if et == "LOCATION":
-            et = "ADDRESS"
-        elif et == "US_SSN":
-            et = "SSN"
-        elif et == "DATE_TIME":
-            et = "DATE"
-            
-        detections.append({
-            "start": r.start,
-            "end": r.end,
-            "entity_type": et
-        })
-
-    # spaCy ORG
-    spacy_doc = detector.nlp(text)
-    for ent in spacy_doc.ents:
-        if ent.label_ == "ORG":
-            add_detection_if_no_overlap(detections, ent.start_char, ent.end_char, "COMPANY")
-
-    # Regexes
-    for match in COMPANY_REGEX.finditer(text):
-        start, end = match.span()
-        add_detection_if_no_overlap(detections, start, end, "COMPANY")
-
-    for match in ADDRESS_REGEX.finditer(text):
-        start, end = match.span()
-        add_detection_if_no_overlap(detections, start, end, "ADDRESS")
-
-    for match in SSN_REGEX.finditer(text):
-        start, end = match.span()
-        add_detection_if_no_overlap(detections, start, end, "SSN")
-
-    for match in CC_REGEX.finditer(text):
-        start, end = match.span()
-        add_detection_if_no_overlap(detections, start, end, "CREDIT_CARD")
-
-    for match in IP_REGEX.finditer(text):
-        start, end = match.span()
-        add_detection_if_no_overlap(detections, start, end, "IP_ADDRESS")
-
-    for match in DATE_REGEX.finditer(text):
-        start, end = match.span()
-        add_detection_if_no_overlap(detections, start, end, "DATE")
-
-    for match in PHONE_REGEX.finditer(text):
-        start, end = match.span()
-        add_detection_if_no_overlap(detections, start, end, "PHONE_NUMBER")
-
-    return detections
+    """Predict spans."""
+    return detector.detect_pii(text)
 
 def main():
     print("Loading models...")
@@ -104,7 +35,6 @@ def main():
         
         pred_entities = get_predictions(text)
         
-        
         gt_set = {(e['start'], e['end'], e['type']) for e in gt_entities}
         pred_set = {(p['start'], p['end'], p['entity_type']) for p in pred_entities}
         
@@ -115,7 +45,6 @@ def main():
         total_tp += len(tp_set)
         total_fp += len(fp_set)
         total_fn += len(fn_set)
-        
         
         all_categories = set(list(cat_stats.keys()) + [e['type'] for e in gt_entities] + [p['entity_type'] for p in pred_entities])
         for cat in all_categories:
@@ -156,7 +85,6 @@ def main():
     print(f"Recall:              {overall_recall:.2%}")
     print(f"F1-Score:            {overall_f1:.2%}")
     print(f"Entity-level Acc:    {overall_entity_accuracy:.2%} (TP / (TP + FP + FN))")
-    print("\nNote: True Negatives are not meaningful for PII detection, which is why entity-level metrics are reported.")
 
 if __name__ == '__main__':
     main()
