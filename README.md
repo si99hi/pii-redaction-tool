@@ -3,9 +3,19 @@
 > [!NOTE]
 > **Evaluation Metrics**: Evaluation metrics, annotated datasets, and validation reports are present in the [evaluation](./evaluation) folder. You can calculate them directly by running `python evaluation/metrics.py`.
 
+
+
 A minimal, clean, and professional end-to-end PII Redaction Tool. It allows users to upload a Microsoft Word (`.docx`) prospectus, detects 9 categories of PII using Presidio Analyzer, spaCy, and custom regex fallbacks, replaces detected PII with realistic, format-preserving fake values consistently across the entire document, and returns the redacted file.
 
 The application features a modern, clean, sharp-edged UI (Claude-inspired typography) and standard, exact-match evaluation metrics.
+
+## Screenshots
+
+### Home Screen
+![Redaction Result](images/Screenshot%202026-07-18%20032130.png)
+
+### Redaction Result
+![Home Screen](images/Screenshot%202026-07-18%20023601.png)
 
 ---
 
