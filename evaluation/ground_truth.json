@@ -1,0 +1,146 @@
+[
+  {
+    "text": "KSH INTERNATIONAL LIMITED",
+    "entities": [
+      {
+        "start": 0,
+        "end": 25,
+        "type": "COMPANY",
+        "value": "KSH INTERNATIONAL LIMITED"
+      }
+    ]
+  },
+  {
+    "text": "Our Company was originally incorporated as “Bhandary Metal Extrusion Private Limited” under the provisions of the Companies Act, 1956, pursuant to a certificate of incorporation dated July 30, 1979, issued by the Registrar of Companies, Maharashtra at Bombay. Subsequently, the name of our Company was changed from “Bhandary Metal Extrusion Private Limited” to “KSH International Private Limited” pursuant to a resolution dated June 1, 1996 passed by our Board and a resolution dated June 24, 1996 passed by our shareholders, post which a fresh certificate of incorporation dated July 4, 1996 was issued by Registrar of Companies Maharashtra at Mumbai pursuant to change of name under the Companies Act, 1956. Further, pursuant to a special resolution passed by our Shareholders on January 13, 2011 which was confirmed by an order of the regional director dated August 16, 2011, the registered office of our Company was shifted from the jurisdiction of Registrar of Companies, Maharashtra at Mumbai to the jurisdiction of the Registrar of Companies, Maharashtra at Pune, and a certificate of registration of the order of regional director confirming transfer of the registered office within the same state was issued to us on October 13, 2011, by the RoC. On the conversion of our Company from a private limited company to a public limited company, pursuant to a resolution passed by our Board on December 11, 2024 and a special resolution passed by our Shareholders on December 19, 2024, the name of our Company was changed to “KSH International Limited” and a fresh certificate of incorporation was issued by the Registrar of Companies, Central Processing Centre on January 20, 2025. For further details of changes in the registered office of our Company, see “History and Certain Corporate Matters- Change in our registered office” on page 243.",
+    "entities": [
+      {
+        "start": 44,
+        "end": 84,
+        "type": "COMPANY",
+        "value": "Bhandary Metal Extrusion Private Limited"
+      },
+      {
+        "start": 184,
+        "end": 197,
+        "type": "DATE",
+        "value": "July 30, 1979"
+      },
+      {
+        "start": 362,
+        "end": 395,
+        "type": "COMPANY",
+        "value": "KSH International Private Limited"
+      },
+      {
+        "start": 428,
+        "end": 440,
+        "type": "DATE",
+        "value": "June 1, 1996"
+      },
+      {
+        "start": 484,
+        "end": 497,
+        "type": "DATE",
+        "value": "June 24, 1996"
+      },
+      {
+        "start": 580,
+        "end": 592,
+        "type": "DATE",
+        "value": "July 4, 1996"
+      },
+      {
+        "start": 782,
+        "end": 798,
+        "type": "DATE",
+        "value": "January 13, 2011"
+      },
+      {
+        "start": 862,
+        "end": 877,
+        "type": "DATE",
+        "value": "August 16, 2011"
+      },
+      {
+        "start": 1226,
+        "end": 1242,
+        "type": "DATE",
+        "value": "October 13, 2011"
+      },
+      {
+        "start": 1397,
+        "end": 1414,
+        "type": "DATE",
+        "value": "December 11, 2024"
+      },
+      {
+        "start": 1470,
+        "end": 1487,
+        "type": "DATE",
+        "value": "December 19, 2024"
+      },
+      {
+        "start": 1529,
+        "end": 1554,
+        "type": "COMPANY",
+        "value": "KSH International Limited"
+      },
+      {
+        "start": 1668,
+        "end": 1684,
+        "type": "DATE",
+        "value": "January 20, 2025"
+      }
+    ]
+  },
+  {
+    "text": "Registered Office: 11/3, 11/4 and 11/5, Village Birdewadi, Chakan Taluka - Khed, Pune – 410 501, Maharashtra, India;",
+    "entities": [
+      {
+        "start": 19,
+        "end": 115,
+        "type": "ADDRESS",
+        "value": "11/3, 11/4 and 11/5, Village Birdewadi, Chakan Taluka - Khed, Pune – 410 501, Maharashtra, India"
+      }
+    ]
+  },
+  {
+    "text": "Corporate Office: 201, Tower 2, Montreal Business Centre, Off Pallod Farms, Baner, Pune – 411 045, Maharashtra, India;",
+    "entities": [
+      {
+        "start": 18,
+        "end": 117,
+        "type": "ADDRESS",
+        "value": "201, Tower 2, Montreal Business Centre, Off Pallod Farms, Baner, Pune – 411 045, Maharashtra, India"
+      }
+    ]
+  },
+  {
+    "text": "Contact Person: Sarthak Malvadkar, Company Secretary and Compliance Officer; Telephone: + 91 20 4505 3237;",
+    "entities": [
+      {
+        "start": 16,
+        "end": 33,
+        "type": "PERSON",
+        "value": "Sarthak Malvadkar"
+      },
+      {
+        "start": 88,
+        "end": 105,
+        "type": "PHONE_NUMBER",
+        "value": "+ 91 20 4505 3237"
+      }
+    ]
+  },
+  {
+    "text": "E-mail: cs.connect@kshinternational.com; Website: www.kshinternational.com",
+    "entities": [
+      {
+        "start": 8,
+        "end": 39,
+        "type": "EMAIL_ADDRESS",
+        "value": "cs.connect@kshinternational.com"
+      }
+    ]
+  }
+]
