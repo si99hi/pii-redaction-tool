@@ -10,14 +10,31 @@ from document import load_document, save_document, redact_document
 app = FastAPI(title="PII Redaction Tool API")
 
 allowed_origins = os.getenv("ALLOWED_ORIGINS", "*").split(",")
+frontend_url = os.getenv("FRONTEND_URL")
+if frontend_url:
+    allowed_origins.append(frontend_url)
+
+allowed_origins = [origin.strip() for origin in allowed_origins if origin.strip()]
+
+# If allow_credentials is True, Starlette/FastAPI raises a RuntimeError if "*" is in allow_origins.
+if "*" in allowed_origins:
+    allowed_origins = [o for o in allowed_origins if o != "*"]
+    if not allowed_origins:
+        allowed_origins = [
+            "http://localhost:5173",
+            "http://localhost:3000",
+            "http://127.0.0.1:5173",
+            "http://127.0.0.1:3000",
+        ]
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allowed_origins,
-     allow_origins=[os.getenv("FRONTEND_URL")],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_DIR = os.path.join(BASE_DIR, "uploads")
